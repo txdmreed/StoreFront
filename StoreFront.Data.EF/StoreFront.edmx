@@ -1,0 +1,532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="StoreFrontModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="ColorCodeID" />
+          </Key>
+          <Property Name="ColorCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColorCode" Type="char" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Division">
+          <Key>
+            <PropertyRef Name="DivisionID" />
+          </Key>
+          <Property Name="DivisionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="30" />
+          <Property Name="TitleOfCourtesy" Type="nvarchar" MaxLength="25" />
+          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="HireDate" Type="datetime" />
+          <Property Name="Address" Type="nvarchar" MaxLength="60" />
+          <Property Name="City" Type="nvarchar" MaxLength="25" />
+          <Property Name="State" Type="char" MaxLength="2" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="PrimaryPhone" Type="nvarchar" MaxLength="15" />
+          <Property Name="SecondaryPhone" Type="nvarchar" MaxLength="15" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="50" />
+          <Property Name="DirectReport" Type="int" />
+        </EntityType>
+        <EntityType Name="PriceIndex">
+          <Key>
+            <PropertyRef Name="PriceIndexID" />
+          </Key>
+          <Property Name="PriceIndexID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PriceIndex" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ProductBoard">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DivisonID" Type="int" />
+          <Property Name="PriceIndexID" Type="int" />
+          <Property Name="ColorCodeID" Type="int" />
+          <Property Name="Price" Type="money" />
+          <Property Name="StockStat" Type="nchar" MaxLength="15" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UnitsSold" Type="int" />
+          <Property Name="VendorID" Type="int" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="FiberCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="Weight" Type="int" />
+          <Property Name="Color" Type="varchar" MaxLength="25" />
+          <Property Name="OriginCode" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="Baby" Type="bit" />
+          <Property Name="ActivityType" Type="char" MaxLength="15" />
+          <Property Name="EndProductType" Type="nchar" MaxLength="10" />
+          <Property Name="Size" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorCompanyName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="VendorContactName" Type="varchar" MaxLength="25" />
+          <Property Name="VendorContactTitle" Type="varchar" MaxLength="15" />
+          <Property Name="VendorPhoneNo" Type="varchar" MaxLength="15" />
+          <Property Name="VendorAddress" Type="varchar" MaxLength="50" />
+          <Property Name="VendorCity" Type="varchar" MaxLength="50" />
+          <Property Name="VendorState" Type="char" MaxLength="2" />
+          <Property Name="VendorZipCode" Type="varchar" MaxLength="10" />
+          <Property Name="HomeVendorLocal" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Employees_Employees">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Employee1" Type="Self.Employee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Employee1">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_Colors">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="ColorCodeID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="ColorCodeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_Divisions">
+          <End Role="Division" Type="Self.Division" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Division">
+              <PropertyRef Name="DivisionID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="DivisonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_PriceIndex">
+          <End Role="PriceIndex" Type="Self.PriceIndex" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceIndex">
+              <PropertyRef Name="PriceIndexID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="PriceIndexID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_Vendors">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Property_ProductBoard">
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductBoard">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoreFrontModelStoreContainer">
+          <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Division" EntityType="Self.Division" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceIndex" EntityType="Self.PriceIndex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductBoard" EntityType="Self.ProductBoard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendor" EntityType="Self.Vendor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employees_Employees" Association="Self.FK_Employees_Employees">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Employee1" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_Colors" Association="Self.FK_ProductBoard_Colors">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="ProductBoard" EntitySet="ProductBoard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_Divisions" Association="Self.FK_ProductBoard_Divisions">
+            <End Role="Division" EntitySet="Division" />
+            <End Role="ProductBoard" EntitySet="ProductBoard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_PriceIndex" Association="Self.FK_ProductBoard_PriceIndex">
+            <End Role="PriceIndex" EntitySet="PriceIndex" />
+            <End Role="ProductBoard" EntitySet="ProductBoard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_Vendors" Association="Self.FK_ProductBoard_Vendors">
+            <End Role="Vendor" EntitySet="Vendor" />
+            <End Role="ProductBoard" EntitySet="ProductBoard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Property_ProductBoard" Association="Self.FK_Property_ProductBoard">
+            <End Role="ProductBoard" EntitySet="ProductBoard" />
+            <End Role="Property" EntitySet="Property" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StoreFrontModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="ColorCodeID" />
+          </Key>
+          <Property Name="ColorCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColorCode" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ProductBoards" Relationship="Self.FK_ProductBoard_Colors" FromRole="Color" ToRole="ProductBoard" />
+        </EntityType>
+        <EntityType Name="Division">
+          <Key>
+            <PropertyRef Name="DivisionID" />
+          </Key>
+          <Property Name="DivisionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DivisionName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ProductBoards" Relationship="Self.FK_ProductBoard_Divisions" FromRole="Division" ToRole="ProductBoard" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TitleOfCourtesy" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="HireDate" Type="DateTime" Precision="3" />
+          <Property Name="Address" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PrimaryPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SecondaryPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DirectReport" Type="Int32" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Employees_Employees" FromRole="Employee" ToRole="Employee1" />
+          <NavigationProperty Name="Employee2" Relationship="Self.FK_Employees_Employees" FromRole="Employee1" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="PriceIndex">
+          <Key>
+            <PropertyRef Name="PriceIndexID" />
+          </Key>
+          <Property Name="PriceIndexID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PriceIndex1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductBoards" Relationship="Self.FK_ProductBoard_PriceIndex" FromRole="PriceIndex" ToRole="ProductBoard" />
+        </EntityType>
+        <EntityType Name="ProductBoard">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DivisonID" Type="Int32" />
+          <Property Name="PriceIndexID" Type="Int32" />
+          <Property Name="ColorCodeID" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="StockStat" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UnitsSold" Type="Int32" />
+          <Property Name="VendorID" Type="Int32" />
+          <NavigationProperty Name="Color" Relationship="Self.FK_ProductBoard_Colors" FromRole="ProductBoard" ToRole="Color" />
+          <NavigationProperty Name="Division" Relationship="Self.FK_ProductBoard_Divisions" FromRole="ProductBoard" ToRole="Division" />
+          <NavigationProperty Name="PriceIndex" Relationship="Self.FK_ProductBoard_PriceIndex" FromRole="ProductBoard" ToRole="PriceIndex" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK_ProductBoard_Vendors" FromRole="ProductBoard" ToRole="Vendor" />
+          <NavigationProperty Name="Properties" Relationship="Self.FK_Property_ProductBoard" FromRole="ProductBoard" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="FiberCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Int32" />
+          <Property Name="Color" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="OriginCode" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Baby" Type="Boolean" />
+          <Property Name="ActivityType" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="EndProductType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductBoard" Relationship="Self.FK_Property_ProductBoard" FromRole="Property" ToRole="ProductBoard" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorCompanyName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VendorContactName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="VendorContactTitle" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VendorPhoneNo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VendorAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VendorState" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="VendorZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="HomeVendorLocal" Type="Boolean" />
+          <NavigationProperty Name="ProductBoards" Relationship="Self.FK_ProductBoard_Vendors" FromRole="Vendor" ToRole="ProductBoard" />
+        </EntityType>
+        <Association Name="FK_ProductBoard_Colors">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="ColorCodeID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="ColorCodeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_Divisions">
+          <End Role="Division" Type="Self.Division" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Division">
+              <PropertyRef Name="DivisionID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="DivisonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Employees">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Employee1" Type="Self.Employee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Employee1">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_PriceIndex">
+          <End Role="PriceIndex" Type="Self.PriceIndex" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceIndex">
+              <PropertyRef Name="PriceIndexID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="PriceIndexID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductBoard_Vendors">
+          <End Role="Vendor" Type="Self.Vendor" Multiplicity="0..1" />
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="ProductBoard">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Property_ProductBoard">
+          <End Role="ProductBoard" Type="Self.ProductBoard" Multiplicity="1" />
+          <End Role="Property" Type="Self.Property" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductBoard">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="Property">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StoreFrontEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Colors" EntityType="Self.Color" />
+          <EntitySet Name="Divisions" EntityType="Self.Division" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="PriceIndexes" EntityType="Self.PriceIndex" />
+          <EntitySet Name="ProductBoards" EntityType="Self.ProductBoard" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <AssociationSet Name="FK_ProductBoard_Colors" Association="Self.FK_ProductBoard_Colors">
+            <End Role="Color" EntitySet="Colors" />
+            <End Role="ProductBoard" EntitySet="ProductBoards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_Divisions" Association="Self.FK_ProductBoard_Divisions">
+            <End Role="Division" EntitySet="Divisions" />
+            <End Role="ProductBoard" EntitySet="ProductBoards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Employees" Association="Self.FK_Employees_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Employee1" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_PriceIndex" Association="Self.FK_ProductBoard_PriceIndex">
+            <End Role="PriceIndex" EntitySet="PriceIndexes" />
+            <End Role="ProductBoard" EntitySet="ProductBoards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductBoard_Vendors" Association="Self.FK_ProductBoard_Vendors">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="ProductBoard" EntitySet="ProductBoards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Property_ProductBoard" Association="Self.FK_Property_ProductBoard">
+            <End Role="ProductBoard" EntitySet="ProductBoards" />
+            <End Role="Property" EntitySet="Properties" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StoreFrontModelStoreContainer" CdmEntityContainer="StoreFrontEntities">
+          <EntitySetMapping Name="Colors">
+            <EntityTypeMapping TypeName="StoreFrontModel.Color">
+              <MappingFragment StoreEntitySet="Color">
+                <ScalarProperty Name="ColorCodeID" ColumnName="ColorCodeID" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Divisions">
+            <EntityTypeMapping TypeName="StoreFrontModel.Division">
+              <MappingFragment StoreEntitySet="Division">
+                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="StoreFrontModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TitleOfCourtesy" ColumnName="TitleOfCourtesy" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="PrimaryPhone" ColumnName="PrimaryPhone" />
+                <ScalarProperty Name="SecondaryPhone" ColumnName="SecondaryPhone" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="DirectReport" ColumnName="DirectReport" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceIndexes">
+            <EntityTypeMapping TypeName="StoreFrontModel.PriceIndex">
+              <MappingFragment StoreEntitySet="PriceIndex">
+                <ScalarProperty Name="PriceIndexID" ColumnName="PriceIndexID" />
+                <ScalarProperty Name="PriceIndex1" ColumnName="PriceIndex" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductBoards">
+            <EntityTypeMapping TypeName="StoreFrontModel.ProductBoard">
+              <MappingFragment StoreEntitySet="ProductBoard">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="DivisonID" ColumnName="DivisonID" />
+                <ScalarProperty Name="PriceIndexID" ColumnName="PriceIndexID" />
+                <ScalarProperty Name="ColorCodeID" ColumnName="ColorCodeID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="StockStat" ColumnName="StockStat" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UnitsSold" ColumnName="UnitsSold" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="StoreFrontModel.Property">
+              <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="FiberCode" ColumnName="FiberCode" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="OriginCode" ColumnName="OriginCode" />
+                <ScalarProperty Name="Baby" ColumnName="Baby" />
+                <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
+                <ScalarProperty Name="EndProductType" ColumnName="EndProductType" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="StoreFrontModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendor">
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+                <ScalarProperty Name="VendorCompanyName" ColumnName="VendorCompanyName" />
+                <ScalarProperty Name="VendorContactName" ColumnName="VendorContactName" />
+                <ScalarProperty Name="VendorContactTitle" ColumnName="VendorContactTitle" />
+                <ScalarProperty Name="VendorPhoneNo" ColumnName="VendorPhoneNo" />
+                <ScalarProperty Name="VendorAddress" ColumnName="VendorAddress" />
+                <ScalarProperty Name="VendorCity" ColumnName="VendorCity" />
+                <ScalarProperty Name="VendorState" ColumnName="VendorState" />
+                <ScalarProperty Name="VendorZipCode" ColumnName="VendorZipCode" />
+                <ScalarProperty Name="HomeVendorLocal" ColumnName="HomeVendorLocal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
